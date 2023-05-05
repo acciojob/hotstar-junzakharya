@@ -39,7 +39,7 @@ public class WebSeriesService {
         webSeries.setSeriesName(seriesName);
         webSeries.setAgeLimit(webSeriesEntryDto.getAgeLimit());
         webSeries.setRating(webSeriesEntryDto.getRating());
-        webSeries.setSubscriptionType(webSeries.getSubscriptionType());
+        webSeries.setSubscriptionType(webSeriesEntryDto.getSubscriptionType());
         webSeries.setProductionHouse(productionHouse);
 
         WebSeries savedWebSeries=webSeriesRepository.save(webSeries);
@@ -47,6 +47,7 @@ public class WebSeriesService {
         productionHouse.getWebSeriesList().add(savedWebSeries);
 
         productionHouse.setRatings(updateRatings(productionHouse));
+        productionHouseRepository.save(productionHouse);
 
         return webSeries.getId();
     }

@@ -3,9 +3,7 @@ package com.driver.EntryDto;
 import com.driver.model.ProductionHouse;
 import com.driver.model.SubscriptionType;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 public class WebSeriesEntryDto {
 
@@ -16,9 +14,13 @@ public class WebSeriesEntryDto {
 
     private double rating;
 
+    @Enumerated(EnumType.STRING)
     private SubscriptionType subscriptionType; //This denotes with which of subscriptionType this webseries comes ie. BASIC,PRO, ELITE
 
     private Integer productionHouseId;
+
+    public WebSeriesEntryDto() {
+    }
 
     public WebSeriesEntryDto(String seriesName, int ageLimit, double rating, SubscriptionType subscriptionType, Integer productionHouseId) {
         this.ageLimit = ageLimit;

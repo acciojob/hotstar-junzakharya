@@ -23,9 +23,7 @@ public class UserService {
 
 
     public Integer addUser(User user) {
-
         userRepository.save(user);
-
         return user.getId();
     }
 

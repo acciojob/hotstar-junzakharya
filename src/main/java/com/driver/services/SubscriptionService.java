@@ -78,7 +78,6 @@ public class SubscriptionService {
         Subscription savedSub = subscriptionRepository.save(subscription);
 
         user.setSubscription(savedSub);
-        userRepository.save(user);
 
         return newPrice-currentPrice;
 
