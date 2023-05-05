@@ -16,8 +16,12 @@ public class ProductionHouseService {
     ProductionHouseRepository productionHouseRepository;
 
     public Integer addProductionHouseToDb(ProductionHouseEntryDto productionHouseEntryDto){
-
-        ProductionHouse productionHouse = new ProductionHouse();
+        ProductionHouse productionHouse;
+        try {
+            productionHouse = new ProductionHouse();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         productionHouse.setName(productionHouseEntryDto.getName());
         productionHouse.setRatings(0.0);

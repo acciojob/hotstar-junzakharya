@@ -8,6 +8,7 @@ import com.driver.model.WebSeries;
 import com.driver.repository.UserRepository;
 import com.driver.repository.WebSeriesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,9 +23,14 @@ public class UserService {
     WebSeriesRepository webSeriesRepository;
 
 
-    public Integer addUser(User user) {
-        userRepository.save(user);
-        return user.getId();
+    public Integer addUser(User user) throws Exception {
+        try {
+            userRepository.save(user);
+            return user.getId();
+        } catch (DataIntegrityViolationException e) {
+            // Handle duplicate email exception
+            throw new RuntimeException();
+        }
     }
 
     public Integer getAvailableCountOfWebSeriesViewable(Integer userId) {

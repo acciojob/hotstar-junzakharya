@@ -10,6 +10,8 @@ import com.driver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +35,7 @@ public class SubscriptionService {
         subscription.setUser(user);
         subscription.setSubscriptionType(subscriptionEntryDto.getSubscriptionType());
         subscription.setNoOfScreensSubscribed(subscriptionEntryDto.getNoOfScreensRequired());
+        subscription.setStartSubscriptionDate(Date.from(Instant.now()));
 
         Integer amount = 0;
 
@@ -57,7 +60,12 @@ public class SubscriptionService {
         //If you are already at an ElITE subscription : then throw Exception ("Already the best Subscription")
         //In all other cases just try to upgrade the subscription and tell the difference of price that user has to pay
         //update the subscription in the repository
-        User user = userRepository.findById(userId).get();
+        User user;
+        try {
+            user = userRepository.findById(userId).get();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         Subscription subscription = user.getSubscription();
 
         SubscriptionType currentSubscription = subscription.getSubscriptionType();
