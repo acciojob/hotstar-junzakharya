@@ -23,11 +23,11 @@ public class UserService {
     WebSeriesRepository webSeriesRepository;
 
 
-    public Integer addUser(User user){
+    public Integer addUser(User user) throws Exception {
         try {
             userRepository.save(user);
             return user.getId();
-        } catch (Exception e) {
+        } catch (DataIntegrityViolationException e) {
             // Handle duplicate email exception
             throw new RuntimeException();
         }
