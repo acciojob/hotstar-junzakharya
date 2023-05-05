@@ -14,11 +14,15 @@ public class SubscriptionController {
     SubscriptionService subscriptionService;
 
     @PostMapping("/buy")
-    public Integer buySubscription(@RequestBody SubscriptionEntryDto subscriptionEntryDto) throws Exception{
+    public Integer buySubscription(@RequestBody SubscriptionEntryDto subscriptionEntryDto){
 
         //We need to buy subscription and save its relevant subscription to the db and return the finalAmount
+        try {
+            return subscriptionService.buySubscription(subscriptionEntryDto);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
-        return subscriptionService.buySubscription(subscriptionEntryDto);
     }
 
 
