@@ -75,9 +75,9 @@ public class SubscriptionService {
         int currentPrice = subscription.getTotalAmountPaid();
         subscription.setSubscriptionType(newSubscription);
         subscription.setTotalAmountPaid(newPrice);
-        subscriptionRepository.save(subscription);
+        Subscription savedSub = subscriptionRepository.save(subscription);
 
-        user.setSubscription(subscription);
+        user.setSubscription(savedSub);
         userRepository.save(user);
 
         return newPrice-currentPrice;

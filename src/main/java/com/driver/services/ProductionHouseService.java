@@ -23,6 +23,8 @@ public class ProductionHouseService {
         productionHouse.setRatings(0.0);
         productionHouse.setWebSeriesList(new ArrayList<>());
 
+        productionHouseRepository.save(productionHouse);
+
         return productionHouse.getId();
     }
 

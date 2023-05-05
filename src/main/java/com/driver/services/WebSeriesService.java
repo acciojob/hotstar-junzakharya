@@ -42,9 +42,9 @@ public class WebSeriesService {
         webSeries.setSubscriptionType(webSeries.getSubscriptionType());
         webSeries.setProductionHouse(productionHouse);
 
-        webSeriesRepository.save(webSeries);
+        WebSeries savedWebSeries=webSeriesRepository.save(webSeries);
 
-        productionHouse.getWebSeriesList().add(webSeries);
+        productionHouse.getWebSeriesList().add(savedWebSeries);
 
         productionHouse.setRatings(updateRatings(productionHouse));
 
