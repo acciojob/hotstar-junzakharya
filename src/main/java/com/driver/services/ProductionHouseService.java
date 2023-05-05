@@ -19,9 +19,6 @@ public class ProductionHouseService {
         ProductionHouse productionHouse;
         try {
             productionHouse = new ProductionHouse();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
 
         productionHouse.setName(productionHouseEntryDto.getName());
         productionHouse.setRatings(0.0);
@@ -30,6 +27,9 @@ public class ProductionHouseService {
         productionHouseRepository.save(productionHouse);
 
         return productionHouse.getId();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

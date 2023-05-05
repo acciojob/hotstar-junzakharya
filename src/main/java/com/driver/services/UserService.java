@@ -23,7 +23,7 @@ public class UserService {
     WebSeriesRepository webSeriesRepository;
 
 
-    public Integer addUser(User user) throws Exception {
+    public Integer addUser(User user) {
         try {
             userRepository.save(user);
             return user.getId();
