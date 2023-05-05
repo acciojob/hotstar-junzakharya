@@ -8,6 +8,8 @@ import com.driver.repository.WebSeriesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class WebSeriesService {
 
@@ -23,8 +25,44 @@ public class WebSeriesService {
         //Incase the seriesName is already present in the Db throw Exception("Series is already present")
         //use function written in Repository Layer for the same
         //Dont forget to save the production and webseries Repo
+        String seriesName = webSeriesEntryDto.getSeriesName();
+        Integer productionHouseId = webSeriesEntryDto.getProductionHouseId();
 
-        return null;
+        if (webSeriesRepository.findBySeriesName(seriesName) != null) {
+            throw new Exception("Series is already present");
+        }
+
+        ProductionHouse productionHouse = productionHouseRepository.findById(productionHouseId).get();
+
+        WebSeries webSeries = new WebSeries();
+
+        webSeries.setSeriesName(seriesName);
+        webSeries.setAgeLimit(webSeriesEntryDto.getAgeLimit());
+        webSeries.setRating(webSeriesEntryDto.getRating());
+        webSeries.setSubscriptionType(webSeries.getSubscriptionType());
+        webSeries.setProductionHouse(productionHouse);
+
+        webSeriesRepository.save(webSeries);
+
+        productionHouse.getWebSeriesList().add(webSeries);
+
+        productionHouse.setRatings(updateRatings(productionHouse));
+
+        return webSeries.getId();
+    }
+
+    private double updateRatings(ProductionHouse productionHouse) {
+        List<WebSeries> webSeriesList = webSeriesRepository.findByProductionHouse(productionHouse);
+        if (webSeriesList.isEmpty()) {
+            return -1; // no web series to compute the average rating
+        }
+        double totalRating = 0.0;
+        for (WebSeries webSeries : webSeriesList) {
+            totalRating += webSeries.getRating();
+        }
+        double avgRating = totalRating / webSeriesList.size();
+
+        return avgRating;
     }
 
 }
