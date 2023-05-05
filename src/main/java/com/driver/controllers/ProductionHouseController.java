@@ -19,9 +19,13 @@ public class ProductionHouseController {
     ProductionHouseService productionHouseService;
 
     @PostMapping("/add")
-    public Integer addProductionHouseInfoIntoDb(@RequestBody ProductionHouseEntryDto productionHouseEntryDto) throws Exception{
+    public Integer addProductionHouseInfoIntoDb(@RequestBody ProductionHouseEntryDto productionHouseEntryDto){
         //Default ratings of the ProductionHouse should be 0
+        try {
+            return productionHouseService.addProductionHouseToDb(productionHouseEntryDto);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
-        return productionHouseService.addProductionHouseToDb(productionHouseEntryDto);
     }
 }
