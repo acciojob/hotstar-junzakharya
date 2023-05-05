@@ -60,34 +60,34 @@ public class SubscriptionService {
         //If you are already at an ElITE subscription : then throw Exception ("Already the best Subscription")
         //In all other cases just try to upgrade the subscription and tell the difference of price that user has to pay
         //update the subscription in the repository
-        User user;
         try {
-            user = userRepository.findById(userId).get();
+            User user = userRepository.findById(userId).get();
+
+            Subscription subscription = user.getSubscription();
+
+            SubscriptionType currentSubscription = subscription.getSubscriptionType();
+            SubscriptionType newSubscription;
+            int newPrice;
+            if (currentSubscription == SubscriptionType.ELITE) {
+                throw new Exception("Already the best Subscription");
+            } else if (currentSubscription == SubscriptionType.PRO) {
+                newSubscription = SubscriptionType.ELITE;
+                newPrice = 1000 + 350 * subscription.getNoOfScreensSubscribed();
+            } else {
+                newSubscription = SubscriptionType.PRO;
+                newPrice = 800 + 250 * subscription.getNoOfScreensSubscribed();
+            }
+            int currentPrice = subscription.getTotalAmountPaid();
+            subscription.setSubscriptionType(newSubscription);
+            subscription.setTotalAmountPaid(newPrice);
+            Subscription savedSub = subscriptionRepository.save(subscription);
+
+            user.setSubscription(savedSub);
+
+            return newPrice - currentPrice;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        Subscription subscription = user.getSubscription();
-
-        SubscriptionType currentSubscription = subscription.getSubscriptionType();
-        SubscriptionType newSubscription;
-        int newPrice;
-        if(currentSubscription==SubscriptionType.ELITE){
-            throw new Exception("Already the best Subscription");
-        } else if (currentSubscription==SubscriptionType.PRO) {
-            newSubscription = SubscriptionType.ELITE;
-            newPrice = 1000 + 350*subscription.getNoOfScreensSubscribed();
-        } else{
-            newSubscription = SubscriptionType.PRO;
-            newPrice =  800 + 250*subscription.getNoOfScreensSubscribed();
-        }
-        int currentPrice = subscription.getTotalAmountPaid();
-        subscription.setSubscriptionType(newSubscription);
-        subscription.setTotalAmountPaid(newPrice);
-        Subscription savedSub = subscriptionRepository.save(subscription);
-
-        user.setSubscription(savedSub);
-
-        return newPrice-currentPrice;
 
     }
 
